@@ -1,0 +1,238 @@
+# Language, this format style is targeted at.
+Language: Cpp
+# We define all options explicitly so changing BasedOnStyle should not effect
+# the formatting. However CLANG expects this option to be specified.
+BasedOnStyle: LLVM
+# Format compatible with standard
+# i.e. A<A<int>> instead of A<A<int> > in Cpp11
+Standard: Cpp11
+
+################################################################################
+# General style options
+################################################################################
+# Use Allman bracket style.
+BreakBeforeBraces: Allman
+
+# The maximum number of columns (with respect to PenaltyExcessCharacter)
+ColumnLimit: 120
+
+# Align pointer asterisk  and reference ampersand left.
+# int* x = *y;
+# int& z = &a;
+PointerAlignment: Left
+
+# Do not derive pointer alignment from file.
+DerivePointerAlignment: false
+
+# Break after binary operators (i.e. +, &&, ...) (not before).
+# int x = someValue +
+#         someOtherValue;
+BreakBeforeBinaryOperators: None
+
+# Break constructor initializers before commas and align the commas with
+# the colon.
+BreakConstructorInitializersBeforeComma: true
+
+# Always use alignment scheme from previous rule, even if all constructor
+# initializers would fit on a single line.
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+# Format braced lists as best suited for C++11 braced lists.
+# - No spaces inside the braced list
+# - No line break before the closing brace.
+# - Indentation with the continuation indent, not with the block indent.
+Cpp11BracedListStyle: true
+
+# Allow breaking string literals if they do not fulfil the column limit.
+BreakStringLiterals: true
+
+# Do not generally place ternary operators after line breaks.
+BreakBeforeTernaryOperators: false
+
+# Try not to insert a new line after the return type of a function (with
+# respect to PenaltyReturnTypeOnItsOwnLine).
+AlwaysBreakAfterReturnType: None
+
+# Do not generally insert a \n before multi-line string literals.
+AlwaysBreakBeforeMultilineStrings: false
+
+# Always break after the template <...> of a template declaration.
+AlwaysBreakTemplateDeclarations: true
+
+# Remove empty lines at the start of a block.
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Do not keep more than 1 consecutive empty line.
+MaxEmptyLinesToKeep: 1
+
+# Known effects this rule has:
+# - Makes sure multi-line comments do not violate the column limit
+# - Aligns single line comments if a long single line comment is split into
+#   multiple lines due to the column limit
+# - Insert single space at the beginning of a single line comment
+ReflowComments: true
+
+################################################################################
+# Indent options
+################################################################################
+
+# The number of columns used for indentation.
+IndentWidth: 2
+
+# The number of columns used for tab stops.
+TabWidth: 2
+
+# Replace all tab usage with spaces.
+UseTab: Never
+
+# The default indent for line continuations.
+ContinuationIndentWidth: 4
+
+# Indent access modifier two spaces less than other class declarations.
+AccessModifierOffset: -2
+
+# The indent for constructor initializer lists over multiple lines.
+ConstructorInitializerIndentWidth: 4
+
+# Indent content in all namespaces
+NamespaceIndentation: All
+
+# Indent case labels one level from the switch statement.
+IndentCaseLabels: true
+
+# Indent if a function definition or declaration is wrapped after the type.
+IndentWrappedFunctionNames: false
+
+################################################################################
+# Spacing options
+################################################################################
+
+# Insert space after a C style cast.
+SpaceAfterCStyleCast: true
+
+# Insert a space between template keyword and <...>
+# template <typename int>
+SpaceAfterTemplateKeyword: true
+
+# Insert a space before assignment operators.
+SpaceBeforeAssignmentOperators: true
+
+# Put a space between control statements (for, if, while, ...) and () but not
+# between function name and parameter list
+SpaceBeforeParens: ControlStatements
+
+# Remove spaces in empty parents.
+SpaceInEmptyParentheses: false
+
+# Insert two spaces between statements and single line comments (// only!).
+SpacesBeforeTrailingComments: 2
+
+# Remove spaces after "<" and before ">".
+SpacesInAngles: false
+
+# Remove spaces in c style casts.
+SpacesInCStyleCastParentheses: false
+
+# Remove spaces after "(" and before ")"
+SpacesInParentheses: false
+
+# Remove spaces after "[" and before "]"
+SpacesInSquareBrackets: false
+
+################################################################################
+# Alignment options
+################################################################################
+
+# Horizontally align function arguments after an open parenthesis if they do
+# not fit on a single line.
+AlignAfterOpenBracket: Align
+
+# Horizontally align assignment operators on consecutive lines.
+AlignConsecutiveAssignments: true
+
+# Horizontally align declaration names on consecutive lines.
+AlignConsecutiveDeclarations : true
+
+# Aligns escaped newlines as far left as possible. Otherwise puts them into the
+# right-most column.
+AlignEscapedNewlinesLeft: false
+
+# Aligns the operands of a single expression that needs to be split over
+# multiple lines.
+AlignOperands: true
+
+# Do not align multiple C++ style comments on consecutive lines.
+AlignTrailingComments: false
+
+# Do not allow all parameters on a single line after the function name. Put
+# every parameter on its own single line instead (see next option).
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# If function arguments do not fit on the same line as the function,
+# give them a single line each
+BinPackArguments: false
+
+# If function parameters do not fit on the same line as the function,
+# give them a single line each
+BinPackParameters: false
+
+################################################################################
+# Disable single line notations
+################################################################################
+
+# Do not allow short { } blocks to be on a single line.
+AllowShortBlocksOnASingleLine: false
+
+# Do not allow short case labels on a single line
+AllowShortCaseLabelsOnASingleLine: false
+
+# Do not allow short functions on a single line
+AllowShortFunctionsOnASingleLine: None
+
+# Do not allow short if statements on a single line.
+AllowShortIfStatementsOnASingleLine: false
+
+# Do not allow short loops on a single line.
+AllowShortLoopsOnASingleLine: false
+
+################################################################################
+# Sort includes
+################################################################################
+
+# - Includes are sorted separately for every include block
+# - Include blocks can be split by a comment line and/or an empty line
+# - Within an include block the sort order is
+#   1. The main header first if it contains the file name and is in " "
+#      (Regex can be specified with: IncludeIsMainRegex)
+#   2. " " header before < > headers
+#   3. Alphabetically [A-Z] before [a-z]
+SortIncludes: true
+
+# Optional:
+#IncludeIsMainRegex
+#IncludeCategories
+
+################################################################################
+# Formatting penalties
+################################################################################
+# We want to avoid characters after the column limit
+PenaltyExcessCharacter: 6000
+# We dislike to have the return type on its own line.
+PenaltyReturnTypeOnItsOwnLine: 5000
+# Penalty for breaking a string.
+PenaltyBreakString: 3000
+# Penalty for breaking before the first <<
+PenaltyBreakFirstLessLess: 2000
+# Penalty for breaking before the first function parameter
+PenaltyBreakBeforeFirstCallParameter: 1000
+# Penalty for breaking comments
+PenaltyBreakComment: 0
+
+################################################################################
+# Further regex options
+################################################################################
+
+#CommentPragmas
+#ForEachMacros
+#MacroBlockBegin
+#MacroBlockEnd

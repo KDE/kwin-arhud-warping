@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "aleix.pol_gonzalez@mercedes-benz.com",
+                "Name": "Aleix Pol"
+            }
+        ],
+        "Category": "Appearance",
+        "Description": "Place ARHud where it belongs",
+        "EnabledByDefault": true,
+        "Icon": "preferences-system-windows-effect-arhud",
+        "License": "GPL",
+        "Name": "ARHud",
+        "ServiceTypes": [
+            "KWin/Effect"
+        ]
+    }
+}
