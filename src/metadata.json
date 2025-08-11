@@ -4,6 +4,18 @@
             {
                 "Email": "aleix.pol_gonzalez@mercedes-benz.com",
                 "Name": "Aleix Pol"
+            },
+            {
+                "Email": "dym@spyro-soft.com",
+                "Name": "Damian Tymofijewicz"
+            },
+            {
+                "Email": "mier@spyro-soft.com",
+                "Name": "Marcin Gieraszek"
+            },
+            {
+                "Email": "kmr@spyro-soft.com",
+                "Name": "Kamil Niewiarowski"
             }
         ],
         "Category": "Appearance",

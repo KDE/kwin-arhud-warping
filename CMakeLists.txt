@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2022 MBition GmbH.
+# SPDX-FileCopyrightText: Copyright (c) 2025 MBition GmbH.
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 cmake_minimum_required(VERSION 3.16)
@@ -53,11 +53,6 @@ find_package(epoxy 1.3 REQUIRED)
 find_package(KWin REQUIRED)
 find_package(MBitionWaylandProtocols REQUIRED)
 
-
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Use Mbient common modules
@@ -67,7 +62,7 @@ include(CompileConfig)
 
 # Removing flags with violate AUTOSAR C++ guidelines
 list(REMOVE_ITEM AVAILABLE_CXX_COMPILATION_FLAGS -Wsuggest-attribute=pure
-                 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn
+        -Wsuggest-attribute=const -Wsuggest-attribute=noreturn
 )
 
 set(ENABLE_SECURE_COMPILATION ON)
@@ -77,10 +72,10 @@ list(REMOVE_ITEM SECURE_CXX_COMPILATION_FLAGS -Werror=bad-function-cast)
 
 # Additional flags
 list(APPEND SECURE_CXX_COMPILATION_FLAGS
-  -O # Needed by -D_FORTIFY_SOURCE=2
-  -Werror=old-style-cast # Remove C-style cast according to AUTOSAR A5-2-2
-  -Werror=switch-enum # error if switch case paths are missing for enum values
-  -fPIC
+    -O # Needed by -D_FORTIFY_SOURCE=2
+    -Werror=old-style-cast # Remove C-style cast according to AUTOSAR A5-2-2
+    -Werror=switch-enum # error if switch case paths are missing for enum values
+    -fPIC
 )
 
 add_subdirectory(src)

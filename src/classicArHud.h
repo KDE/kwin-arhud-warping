@@ -1,52 +1,50 @@
-// SPDX-FileCopyrightText: Copyright (c) 2022 MBition GmbH.
+// SPDX-FileCopyrightText: Copyright (c) 2022-2025 MBition GmbH.
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
 
+#include <effect/effect.h>
+
 #include "MatrixTextureModel.hxx"
 #include "WarpingMatrixInterpolationModel.hxx"
 #include "WarpingUtils.hxx"
-
-#include <effect/effect.h>
 
 #include <memory>
 
 class MBitionWarpedOutput;
 class MBitionWarpedOutputManager;
 
-namespace KWaylandServer
-{
-  class OutputInterface;
-}
-
 namespace KWin
 {
-  class GLFramebuffer;
-  class GLShader;
-  class GLTexture;
 
-  class ArHUDEffect : public Effect
-  {
+class GLFramebuffer;
+class GLShader;
+class GLTexture;
+
+class WarpingEffect;
+
+class ClassicArHudEffect : public QObject
+{
     Q_OBJECT
 
-  public:
-    ArHUDEffect();
-    ~ArHUDEffect() override;
+public:
+    ClassicArHudEffect();
+    ~ClassicArHudEffect();
 
-    void paintScreen(const RenderTarget &renderTarget, const RenderViewport &viewport, int mask, const QRegion &region, Output *screen) override;
-
-    bool isActive() const override;
-
-    int requestedEffectChainPosition() const override
-    {
-      return 99;
-    }
-    static bool supported();
+    /**
+     * @brief paint something on top of the windows. (one or multiple drawing and effects).
+     * @param[in] mask - A set of flags that control or specify various options or conditions for painting the screen.
+     * There are some enums for this purpose in kwineffects.h This function is called by wayland in every render loop.
+     * @param[in] region - Specifying areas of a graphical user interface that need to be painted or updated.
+     * @param[in] data - A set of data for painting the window/effects on the screen(tranlation, rotation, scale, ...).
+     */
+    void paintScreen(const RenderTarget &renderTarget, const RenderViewport &viewport, int mask, const QRegion &region, Output *screen);
+    bool isActive() const;
 
     void checkGlTexture(Output* screen);
     MBitionWarpedOutput* warpedOutput(Output* screen);
 
-  private:
+private:
     uint32_t m_vertexCount = 0;
 
     std::unique_ptr<GLTexture>                  m_GLtexture;
@@ -55,10 +53,6 @@ namespace KWin
     std::unique_ptr<MBitionWarpedOutputManager> m_warpedOutputManager;
 
     Output* m_warpedScreen = nullptr;
-
-    void addScreen(Output* screen);
-    void removeScreen(Output* screen);
-
     std::unique_ptr<GLShader> m_shader;
 
     int m_modelViewProjectioMatrixLocation  = -1;
@@ -69,6 +63,6 @@ namespace KWin
     int m_matrixInterpolationIndexLocation  = -1;
     int m_inputTextureLocation              = -1;
     int m_uvFunctLocation                   = -1;
-  };
+};
 
 }  // namespace KWin
