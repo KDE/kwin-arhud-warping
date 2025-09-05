@@ -43,7 +43,6 @@ public:
     void setWhitePoint(float red, float green, float blue);
 
 private:
-    bool setupVBO(uint32_t x_vertices, uint32_t y_vertices);
     void setupShaderRegions(const params_t& params1, const params_t& params2, const params_t& params3);
 
     struct {

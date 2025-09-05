@@ -27,7 +27,6 @@ void WarpingEffect::paintScreen(const RenderTarget& renderTarget, const RenderVi
 
 bool WarpingEffect::isActive() const {
     if (m_arHudEffect && m_miniArHudEffect) {
-        qCInfo(KWINARHUD_DEBUG) << (m_arHudEffect->isActive() ? "m_arHudEffect is active" : "m_miniArHudEffect is active");
         return m_arHudEffect->isActive() || m_miniArHudEffect->isActive();
     }
     return false;

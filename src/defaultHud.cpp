@@ -53,7 +53,21 @@ struct ShaderRegion
         , params3_y{ getMatrix(x, y, 1, params3) }
         , uv_span{ uvspan }
     {
-        setupVBO(x, y);
+        setupVBO();
+
+        const std::array<const QMatrix4x4*, 6> params = { &params1_x, &params1_y, &params2_x, &params2_y, &params3_x, &params3_y };
+        for (int i = 0; i < 6; i++) {
+            QString buffer;
+            buffer.reserve(256);
+            QTextStream logStream(&buffer);
+            logStream << "[";
+            const float* p = params[i]->data();
+            for (int j = 0; j < 16; j++) {
+                logStream << p[i] << ", ";
+            }
+            logStream << "]";
+            qCInfo(KWINARHUD_DEBUG) << "region:" << x << " " << y << "| params:" << (i / 2 + 1) << (i % 2 ? "y" : "x") << *logStream.string();
+        }
     }
 
     ShaderRegion(ShaderRegion&& other)
@@ -79,10 +93,8 @@ struct ShaderRegion
         };
     }
 
-    bool setupVBO(uint32_t x, uint32_t y)
+    void setupVBO()
     {
-        qCInfo(KWINARHUD_DEBUG) << "setupVBO()" << x << y;
-
         // Shader attribute layout
         const KWin::GLVertexAttrib attribs[] = {
             { KWin::VA_Position, 2, GL_FLOAT, offsetof(KWin::GLVertex2D, position) }
@@ -92,7 +104,7 @@ struct ShaderRegion
         const auto map_ptr = m_vbo->map<KWin::GLVertex2D>(vertexDimensions);
         if (!map_ptr) {
             qCWarning(KWINARHUD_DEBUG) << "setupVBO failed - GLVertexBuffer::map() returned nullptr!";
-            return false;
+            return;
         }
         const auto map = *map_ptr;
 
@@ -119,7 +131,6 @@ struct ShaderRegion
         }
 
         m_vbo->unmap();
-        return true;
     }
 
     static constexpr uint32_t region_width = 3;
@@ -147,6 +158,8 @@ DefaultHudEffect::DefaultHudEffect()
         qCWarning(KWINARHUD_DEBUG) << "Shader is not valid!";
         return;
     }
+
+    qCInfo(KWINARHUD_DEBUG) << "Loading DefaultHudEffect";
 
     m_params1_x_location = m_shader->uniformLocation("params1_x");
     m_params1_y_location = m_shader->uniformLocation("params1_y");
@@ -247,7 +260,7 @@ void DefaultHudEffect::checkGlTexture()
     const QSize content_size{ static_cast<int>(m_hudSize.displayWidth), static_cast<int>(m_hudSize.displayHeight) };
     if (!m_texture || m_texture->size() != content_size)
     {
-        qCInfo(KWINARHUD_DEBUG) << "Setting texture and framebuffer";
+        qCInfo(KWINARHUD_DEBUG) << "Setting texture and framebuffer with size:" << content_size.width() << content_size.height();
         m_texture = GLTexture::allocate(GL_RGBA8, content_size);
         m_texture->setFilter(GL_LINEAR);
         m_texture->setWrapMode(GL_CLAMP_TO_EDGE);
@@ -262,7 +275,7 @@ void DefaultHudEffect::checkGlTexture()
 
 MBitionMiniHudWarping* DefaultHudEffect::miniHud(Output* screen)
 {
-    qCDebug(KWINARHUD_DEBUG) << "miniHud()";
+    qCInfo(KWINARHUD_DEBUG) << "miniHud()";
     assert(screen != nullptr);
 
     if (screen != m_screen && m_miniHud)
@@ -308,6 +321,7 @@ void DefaultHudEffect::setMatrices(int fd)
     }
 
     close(fd);
+    qCInfo(KWINARHUD_DEBUG) << "setMatrices";
     setupShaderRegions(params[0], params[1], params[2]);
 }
 
@@ -336,7 +350,7 @@ void DefaultHudEffect::setupShaderRegions(const params_t& params1, const params_
                                (m_hudSize.displayWidth - margins.x()) / m_hudSize.displayWidth,
                                (m_hudSize.displayHeight - margins.y()) / m_hudSize.displayHeight };
 
-    qCInfo(KWINARHUD_DEBUG) << "content_area" << content_area.x() << content_area.y() << content_area.z() << content_area.w();
+    qCInfo(KWINARHUD_DEBUG) << "content_area: [" << content_area.x() << "-" << content_area.z() << "] [" <<content_area.y() << "-" << content_area.w() << "]";
 
     for (int32_t index = 0; index < ::ShaderRegion::total_regions; index++)
     {
@@ -347,8 +361,6 @@ void DefaultHudEffect::setupShaderRegions(const params_t& params1, const params_
                               content_area.y() + (y / 8.f) * (content_area.w() - content_area.y()),
                               content_area.x() + ((x + 3) / 20.f) * (content_area.z() - content_area.x()),
                               content_area.y() + ((y + 3) / 8.f) * (content_area.w() - content_area.y()) };
-
-        qCInfo(KWINARHUD_DEBUG) << uv_span.x() << uv_span.y() << uv_span.z() << uv_span.w();
 
         m_shaderRegions.emplace_back(x, y, uv_span, params1, params2, params3);
     }
